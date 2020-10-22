@@ -1,0 +1,4 @@
+python-dotenv
+praw
+pytz
+sqlite3
