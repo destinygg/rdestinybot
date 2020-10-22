@@ -46,7 +46,7 @@ python3 -m pip install -r requirements.txt
 This script is configured to run as a cronjob, an example is:
 
 ```
-0 0/1 * * * (cd /home/bots/reddit; /usr/bin/python3 app.py)
+0 * * * * (cd /home/bots/rdestinybot; /usr/local/bin/python3.8 app.py)
 ```
 
 This will run the job hourly at the start of the hour.
