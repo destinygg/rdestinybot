@@ -112,7 +112,10 @@ def check_post():
     # query for anything in the DB marked as 0 for completed
     dbcursor.execute("SELECT * FROM posts WHERE completed='0'")
     res = dbcursor.fetchall()
-    
+
+    posts = len(res)
+    logger.info(f"{posts} are marked as incomplete")
+
     # loop through pending posts 0[0] = id, 0[1] = create, 0[2] = expire, 0[3] = status
     for post in res:
         dt_expire = datetime.strptime(post[2], "%Y-%m-%dT%H:%M:%S")
@@ -122,8 +125,13 @@ def check_post():
         if dt_now > dt_expire:
             logger.info(f"Post {post[0]} expired at {post[2]}. Running removal...")
             remove_post(post[0])
+            posts = posts - 1
         else:
             logger.info(f"Post {post[0]} still active, will expire at {post[2]}.")
+
+    # if there are 0 pending threads, make one
+    if posts == 0:
+        create_post()
 
 if __name__ == "__main__":
     check_post()
